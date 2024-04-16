@@ -112,6 +112,14 @@ Or run the iPlanner ROS node with visualization:
 
     roslaunch iplanner_node iplanner_viz.launch
 
+Run the iPlanner ROS node without visualization on the habitat output (based on the matterport3D dataset):
+
+    roslaunch iplanner_node iplanner_habitat.laucnh
+
+Another terminal:
+    conda activate habitat_0.1.7 && python3 habitat_online_v0.1.7.py
+
+
 ### Path Following
 To ensure the planner executes the planned path correctly, you need to run an independent controller or path follower. Follow the steps below to set up the path follower using the provided launch file from the iplanner repository:
 
