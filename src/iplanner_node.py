@@ -104,6 +104,7 @@ class iPlannerNode:
                 start = time.time()
                 # Network Planning
                 self.preds, self.waypoints, fear_output, _ = self.iplanner_algo.plan(cur_image, self.goal_rb)
+                print(len(self.waypoints.squeeze(0)), self.waypoints.squeeze(0)[0])
                 end = time.time()
                 self.timer_data.data = (end - start) * 1000
                 self.timer_pub.publish(self.timer_data)
@@ -234,8 +235,8 @@ class iPlannerNode:
         else:
             self.img = frame
 
-        if self.is_goal_init:
-            goal_robot_frame = self.goal_pose;
+        if self.is_goal_init: # True once receive new goal, and goal_pose is constant
+            goal_robot_frame = self.goal_pose
             if not self.goal_pose.header.frame_id == self.frame_id:
                 try:
                     goal_robot_frame.header.stamp = self.tf_listener.getLatestCommonTime(self.goal_pose.header.frame_id,
@@ -244,6 +245,7 @@ class iPlannerNode:
                 except (tf.Exception, tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                     rospy.logerr("Fail to transfer the goal into base frame.")
                     return
+            # goal is represented in the robot_frame
             goal_robot_frame = torch.tensor([goal_robot_frame.point.x, goal_robot_frame.point.y, goal_robot_frame.point.z], dtype=torch.float32)[None, ...]
             self.goal_rb = goal_robot_frame
         else:
