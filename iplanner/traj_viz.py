@@ -199,6 +199,10 @@ class TrajViz:
         mesh_box.paint_uniform_color([1.0, 0.64, 0.1])
 
         # Init open3D render
+        # TODO(gogojjh): solve the issue
+        #   [Open3D INFO] EGL headless mode enabled.
+        #   FEngine (64 bits) created at 0x1aca64b0 (threading is enabled)
+        #   eglInitialize failed
         render = rendering.OffscreenRenderer(self.camera.width, self.camera.height)
         render.scene.set_background([0.0, 0.0, 0.0, 1.0])  # RGBA
         render.scene.scene.enable_sun_light(False)
@@ -208,7 +212,7 @@ class TrajViz:
         mesh_sphere.compute_vertex_normals()
         mesh_sphere_fear.compute_vertex_normals()
         mesh_box.compute_vertex_normals()
-        
+       
         wp_start_idx = 1
         cv_img_list = []
 
